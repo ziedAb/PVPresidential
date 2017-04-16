@@ -7,43 +7,27 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-@import '../../components/variables.css';
+ @import '../../components/variables.css';
+ @import '../Grid.css';
 
 .root {
   padding-left: 20px;
   padding-right: 20px;
 }
 
-.container {
+.sectionTitle{
+  color: var(--blue);
+  direction: rtl;
+}
+
+.school{
+  text-align: center;
   margin: 0 auto;
-  padding: 0 0 40px;
-  max-width: var(--max-content-width);
+  display: block;
+  font-weight: bold;
+  color:  #373277;
 }
 
-.newsItem {
-  margin: 0 0 2rem;
-}
-
-.newsTitle {
-  font-size: 1.5rem;
-}
-
-.newsDesc {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-size: 1.125rem;
-  }
-
-  pre {
-    white-space: pre-wrap;
-    font-size: 0.875rem;
-  }
-
-  img {
-    max-width: 100%;
-  }
+.circonscription{
+  display: block;
 }
