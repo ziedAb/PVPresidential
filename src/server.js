@@ -11,6 +11,7 @@ import path from 'path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
 import expressJwt from 'express-jwt';
 import expressGraphQL from 'express-graphql';
 import jwt from 'jsonwebtoken';
@@ -36,6 +37,12 @@ const app = express();
 // -----------------------------------------------------------------------------
 global.navigator = global.navigator || {};
 global.navigator.userAgent = global.navigator.userAgent || 'all';
+
+
+// connect to mongodb
+mongoose.connect('mongodb://localhost/PVMourakiboun');
+mongoose.Promise = global.Promise;
+
 
 //
 // Register Node.js middleware
@@ -80,6 +87,10 @@ app.use('/graphql', expressGraphQL(req => ({
   rootValue: { request: req },
   pretty: __DEV__,
 })));
+
+// initialize routes
+app.use('/api', require('./data/api/api'));
+app.use('/api', require('./data/api/getOffice'));
 
 //
 // Register server-side rendering middleware

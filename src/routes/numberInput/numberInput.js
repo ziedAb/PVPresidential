@@ -14,14 +14,12 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 class numberInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
-
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
     if (event.target.value.length <= this.props.maxLength){
-        this.setState({value: event.target.value});
+      this.props.onChange(event.target.value, event.target.name);
     }
   }
 
@@ -35,7 +33,7 @@ class numberInput extends React.Component {
         <input
           className={s.input}
           id={this.props.id}
-          value={this.state.value}
+          value={this.props.value}
           type="number"
           name={this.props.name}
           onChange={this.handleChange}
