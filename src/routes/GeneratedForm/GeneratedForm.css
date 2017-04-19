@@ -8,5 +8,18 @@
  */
 
  @import '../../components/variables.css';
- @import '../../components/sharedComponents.css';
+  @import '../../components/sharedComponents.css';
  @import '../Grid.css';
+
+
+ .school{
+   text-align: center;
+   margin: 0 auto;
+   display: block;
+   font-weight: bold;
+   color:  #373277;
+ }
+
+ .circonscription{
+   display: block;
+ }
