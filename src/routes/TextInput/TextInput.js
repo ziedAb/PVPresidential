@@ -26,7 +26,7 @@ class TextInput extends React.Component {
 
   render() {
     return (
-      <div className={s.formGroup} {...this.props}>
+      <div className={`${s.formGroup} ${ this.props.className }`}>
         <label className={s.label} htmlFor={this.props.id}>
           {this.props.label}
         </label>

@@ -38,8 +38,8 @@ class SelectOffice extends React.Component {
     })
     .then(res => res.json())
     .then((json) => {
-      console.info(json);
       this.props.officeChange(json);
+      document.getElementById('GeneratedForm').scrollIntoView({block: 'start',  behaviour: 'smooth'});
     })
     .catch((err) => {
       console.error(err);
