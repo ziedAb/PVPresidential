@@ -91,6 +91,7 @@ app.use('/graphql', expressGraphQL(req => ({
 // initialize routes
 app.use('/api', require('./data/api/api'));
 app.use('/api', require('./data/api/getOffice'));
+app.use('/api', require('./data/api/getCirconscription'));
 
 //
 // Register server-side rendering middleware

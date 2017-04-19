@@ -39,6 +39,7 @@ class SelectOffice extends React.Component {
     .then(res => res.json())
     .then((json) => {
       console.info(json);
+      this.props.officeChange(json);
     })
     .catch((err) => {
       console.error(err);
