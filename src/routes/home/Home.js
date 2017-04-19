@@ -14,21 +14,55 @@ import NumberInput from '../numberInput';
 import CheckboxInput from '../CheckboxInput';
 import TextInput from '../TextInput';
 import SelectOffice from '../SelectOffice';
+import Parties from '../Parties'
 
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      station_name: "",
+      circonscription: "",
+      circonscriptionObject:{}
+    }
 
+    this.handleOfficeChange = this.handleOfficeChange.bind(this);
+  }
+
+  handleOfficeChange(office){
+    var change = {};
+    fetch('/api/getCirconscription/' + office.circonscription.toUpperCase(), {
+      method: 'GET',
+      headers: {'Content-Type':'application/json'}
+    })
+    .then(res => res.json())
+    .then((json) => {
+      console.log(json);
+      change = json;
+      this.setState({
+        station_name:office.station_name,
+        circonscription: office.circonscription,
+        circonscriptionObject: json
+      });
+      console.log(this.state.circonscriptionObject);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  }
+
+  const
   render() {
     return (
       <div className={s.root}>
         <div className={s.container}>
           <h1 className={s.sectionTitle}>مركز الاقتراع</h1>
-          <SelectOffice />
+          <SelectOffice officeChange={this.handleOfficeChange}/>
         </div>
         <div className={s.container}>
           <div className={s.row}>
             <h2 className={`${ s.col } ${ s.school }`}>
-              <span className={s.circonscription}>TUNIS2</span>
-              م إبتدائية المنزه التاسع - المنار
+              <span className={s.circonscription}>{this.state.circonscription}</span>
+              {this.state.station_name}
             </h2>
           </div>
           <div className={s.row}>
@@ -60,11 +94,7 @@ class Home extends React.Component {
 
         <div className={s.container}>
           <h1 className={s.sectionTitle}>القائمات</h1>
-          <div className={s.row}>
-            <NumberInput className={`${ s.col } ${ s.oneThird }`} maxLength="3" id="test" name="testname" label="1 ـ البناء الوطني"/>
-            <NumberInput className={`${ s.col } ${ s.oneThird }`} maxLength="3" id="test" name="testname" label="الشعب يريد"/>
-            <NumberInput className={`${ s.col } ${ s.oneThird }`} maxLength="3" id="test" name="testname" label="البناء الوطني"/>
-          </div>
+          <Parties list={this.state.circonscriptionObject.parties} other={this.state.station_name}/>
         </div>
       </div>
     );
