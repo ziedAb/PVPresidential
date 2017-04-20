@@ -21,11 +21,33 @@ class GeneratedForm extends React.Component {
     super(props);
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleFormSubmit(target) {
+  updateFilledTimes(obj){
+    const filled = obj.filled != undefined ? 1 : obj.filled + 1;
+
+    fetch('/api/Office/' + obj._id, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json'},
+      body: {"filled" : filled}
+    })
+    .then(res => res.json())
+    .then((json) => {
+      console.log(json);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  }
+
+  handleFormSubmit(event) {
     event.preventDefault();
-    console.log(target);
+    console.log(this.refs.form.elements);
+  }
+
+  handleChange(value, name){
+    // this.setState({ [name]: value });
   }
 
 
@@ -33,7 +55,7 @@ class GeneratedForm extends React.Component {
     const isShown = this.props.showForm;
     if (isShown){
       return (
-        <form id="GeneratedForm" onSubmit={this.handleFormSubmit}>
+        <form id="GeneratedForm" ref="form" onSubmit={this.handleFormSubmit}>
           <div className={s.container}>
             <div className={s.row}>
               <h2 className={`${ s.col } ${ s.school }`}>
@@ -42,38 +64,46 @@ class GeneratedForm extends React.Component {
               </h2>
             </div>
             <div className={s.row}>
-              <CheckboxInput className={`${ s.col } ${ s.oneThird }`} id="testcheck" name="testcheck" label="يوجد ختم الهيئة؟"/>
-              <TextInput className={`${ s.col } ${ s.oneSix }`} id="testText" name="testText" label="توقيت بداية الفرز"/>
+              <CheckboxInput className={`${ s.col } ${ s.oneThird }`} id="tampon" label="يوجد ختم الهيئة؟"/>
+              <TextInput className={`${ s.col } ${ s.oneSix }`} id="countingStart" label="توقيت بداية الفرز"/>
               <div className={`${ s.col } ${ s.oneSix }`} > </div>
-              <TextInput className={`${ s.col } ${ s.oneSix }`} id="testText" name="testText" label="توقيت ختم الفرز"/>
+              <TextInput className={`${ s.col } ${ s.oneSix }`} id="countingEnd" label="توقيت ختم الفرز"/>
               <div className={`${ s.col } ${ s.oneSix }`} > </div>
             </div>
 
             <h1 className={s.sectionTitle}>معلومات غريبة</h1>
 
             <div className={s.row}>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="عدد الناخبين المرسمين بمكتب الاقتراع"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="أ- عدد الناخبين الذين امضوا في قائمة الناخبين"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="- عدد أوراق التصويت المسلمة لمكتب الاقتراع"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="ج- عدد أوراق التصويت التالفة"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="د- عدد أوراق التصويت الباقية"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="registeredVoters" label="عدد الناخبين المرسمين بمكتب الاقتراع"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="aSigningVoters" label="أ- عدد الناخبين الذين امضوا في قائمة الناخبين"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="bDeliveredBallots" label="- عدد أوراق التصويت المسلمة لمكتب الاقتراع"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="cSpoiledBallots" label="ج- عدد أوراق التصويت التالفة"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="dLeftBallots" label="د- عدد أوراق التصويت الباقية"/>
             </div>
 
             <div className={s.row}>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="ه- عدد أوراق التصويت التالفة + عدد أوراق التصويت الباقية"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="و- عدد أوراق التصويت المستخرجة من الصندوق"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="ز=ه+و"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="ح- المطابقة 1 : الفارق العددي بين ب و- ز"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="ط- المطابقة 2 : الفارق العددي بين أ و و"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="eCplusD" label="ه- عدد أوراق التصويت التالفة + عدد أوراق التصويت الباقية"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="fExtractedBallots" label="و- عدد أوراق التصويت المستخرجة من الصندوق"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="gEplusF" label="ز=ه+و"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="hBminusG" label="ح- المطابقة 1 : الفارق العددي بين ب و- ز"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="iAminusF" label="ط- المطابقة 2 : الفارق العددي بين أ و و"/>
             </div>
-          </div>
 
-          <div className={s.container}>
             <h1 className={s.sectionTitle}>القائمات</h1>
             <Parties list={this.props.circonscriptionObject.parties}/>
-          </div>
-          <div className={s.row}>
-            <input type="submit" className={s.submit} value="Validate" />
+
+            <h1 className={s.sectionTitle}>أوذر ستوف</h1>
+            <div className={s.row}>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="jListVotes" label="ي- الأصوات المصرح بها لكل القائمات" />
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="kCancelledVotes" label="ك- عدد أوراق التصويت الملغاة"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="lBlankVotes" label="ل- عدد أوراق التصويت البيضاء"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="mJplusKplusL" label="م) المجموع = ي+ ك+ ل"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="nFminusM" label="ن- المطابقة 3 : الفارق العددي بين و و م"/>
+            </div>
+
+            <div className={s.row}>
+              <input type="submit" className={s.submit} value="Validate" />
+            </div>
           </div>
         </form>
       );

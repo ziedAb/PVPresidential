@@ -24,10 +24,11 @@ class Home extends React.Component {
     }
 
     this.handleOfficeChange = this.handleOfficeChange.bind(this);
+    this.updateFilledTimes = this.updateFilledTimes.bind(this);
   }
 
   handleOfficeChange(office){
-    fetch('/api/getCirconscription/' + office.circonscription.toUpperCase(), {
+    fetch('/api/Circonscription/' + office.circonscription.toUpperCase(), {
       method: 'GET',
       headers: {'Content-Type':'application/json'}
     })

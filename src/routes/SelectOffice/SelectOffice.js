@@ -12,17 +12,20 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './SelectOffice.css';
 import h from '../home/Home.css';
 import NumberInput from '../numberInput';
+import Message from '../../Components/Message';
+
 
 class SelectOffice extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      circonscription: '',
-      delegation: '',
-      subDelegation: '',
-      center: '',
-      station: ''
+      circonscription: '04',
+      delegation: '01',
+      subDelegation: '01',
+      center: '001',
+      station: '01',
+      filled: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -32,14 +35,18 @@ class SelectOffice extends React.Component {
     event.preventDefault();
     const officeID = Number.parseInt(this.state.circonscription.slice(1)+this.state.delegation+this.state.subDelegation+this.state.center+this.state.station,10);
 
-    fetch('/api/getOffice/'+officeID, {
+    fetch('/api/Office/'+officeID, {
       method: 'GET',
       headers: {'Content-Type':'application/json'}
     })
     .then(res => res.json())
     .then((json) => {
-      this.props.officeChange(json);
-      document.getElementById('GeneratedForm').scrollIntoView({block: 'start',  behaviour: 'smooth'});
+      if(json.filled != undefined && json.filled < 2){
+        this.setState({filled: false});
+        this.props.officeChange(json);
+      }
+      else this.setState({filled: true});
+
     })
     .catch((err) => {
       console.error(err);
@@ -62,6 +69,9 @@ class SelectOffice extends React.Component {
         </div>
         <div className={s.row}>
           <input type="submit" className={s.submit} value="search" />
+        </div>
+        <div className={s.row}>
+          <Message show={this.state.filled} text="Ce PV a déja été saisi 2 fois"/>
         </div>
       </form>
     );
