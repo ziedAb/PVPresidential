@@ -10,7 +10,8 @@ const OfficeSchema = new Schema({
     delegation: String,
     number: Number,
     station_name: String,
-    center_name: String
+    center_name: String,
+    filled: Number
 });
 
 const Office = mongoose.model('Office', OfficeSchema);

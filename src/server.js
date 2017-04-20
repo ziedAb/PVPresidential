@@ -90,8 +90,9 @@ app.use('/graphql', expressGraphQL(req => ({
 
 // initialize routes
 app.use('/api', require('./data/api/api'));
-app.use('/api', require('./data/api/getOffice'));
-app.use('/api', require('./data/api/getCirconscription'));
+app.use('/api', require('./data/api/PV'));
+app.use('/api', require('./data/api/Office'));
+app.use('/api', require('./data/api/Circonscription'));
 
 //
 // Register server-side rendering middleware
