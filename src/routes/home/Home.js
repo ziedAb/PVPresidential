@@ -24,7 +24,6 @@ class Home extends React.Component {
     }
 
     this.handleOfficeChange = this.handleOfficeChange.bind(this);
-    this.updateFilledTimes = this.updateFilledTimes.bind(this);
   }
 
   handleOfficeChange(office){
