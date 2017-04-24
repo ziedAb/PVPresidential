@@ -11,16 +11,23 @@ import React from 'react';
 import Home from './Home';
 import fetch from '../../core/fetch';
 import Layout from '../../components/Layout';
+import Auth from '../../core/Auth';
 
 export default {
 
   path: '/',
 
   action() {
-    return {
-      title: 'React Starter Kit',
-      component: <Layout><Home /></Layout>,
-    };
+    if (Auth.isUserAuthenticated()){
+      return {
+        title: 'React Starter Kit',
+        component: <Layout><Home /></Layout>,
+      };
+    }
+    else {
+      return { redirect: '/login' };
+    }
+
   },
 
 };
