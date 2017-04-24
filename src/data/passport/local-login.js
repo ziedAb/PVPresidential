@@ -46,7 +46,6 @@ module.exports = new PassportLocalStrategy({
 
       // create a token string
       const token = jwt.sign(payload, "React Starter Kit");
-      console.log("token " + token);
       const data = {
         name: user.name
       };

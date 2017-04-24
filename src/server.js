@@ -94,11 +94,7 @@ app.use('/api', require('./data/api/PV'));
 app.use('/api', require('./data/api/Office'));
 app.use('/api', require('./data/api/Circonscription'));
 app.use('/api', require('./data/api/User'));
-// routes
-const authRoutes = require('./data/api/auth');
-// const apiRoutes = require('./data/api/api');
-app.use('/auth', authRoutes);
-// app.use('/api', apiRoutes);
+app.use('/auth', require('./data/api/auth'));
 
 //
 // Register server-side rendering middleware
