@@ -20,6 +20,9 @@ import Message from '../../Components/Message';
 class GeneratedForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isSubmit : false
+    }
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -74,6 +77,9 @@ class GeneratedForm extends React.Component {
     .then((json) => {
       console.log(json);
       this.props.toggleFormShow(false);
+      this.setState({
+        isSubmit : true
+      });
     })
     .catch((err) => {
       console.error(err);
@@ -145,7 +151,7 @@ class GeneratedForm extends React.Component {
       return (
         <div className={s.container}>
           <div className={s.row}>
-            <Message show={true} text="PV rempli avec succées !"/>
+            <Message show={this.state.isSubmit} text="PV rempli avec succées !"/>
           </div>
         </div>
       );
