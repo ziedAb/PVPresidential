@@ -94,6 +94,7 @@ app.use('/api', require('./data/api/PV'));
 app.use('/api', require('./data/api/Office'));
 app.use('/api', require('./data/api/Circonscription'));
 app.use('/api', require('./data/api/User'));
+app.use('/api', require('./data/api/Suivi'));
 app.use('/auth', require('./data/api/auth'));
 
 //

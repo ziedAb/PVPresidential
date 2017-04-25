@@ -9,23 +9,27 @@
 
 import React, { PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Contact.css';
+import s from './Stats.css';
+import history from '../../core/history';
 
-class Contact extends React.Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-  };
+class Stats extends React.Component {
+  constructor(props) {
+    super(props);
+
+    // set the initial component state
+    this.state = {
+    };
+  }
 
   render() {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <h1>{this.props.title}</h1>
-          <p>...</p>
+
         </div>
       </div>
     );
   }
 }
 
-export default withStyles(s)(Contact);
+export default withStyles(s)(Stats);

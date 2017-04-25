@@ -41,11 +41,13 @@ class SelectOffice extends React.Component {
     })
     .then(res => res.json())
     .then((json) => {
-      if(json.filled != undefined && json.filled < 2){
+      if( json.filled === 2){
+        this.setState({filled: true});
+      }
+      else {  
         this.setState({filled: false});
         this.props.officeChange(json);
       }
-      else this.setState({filled: true});
 
     })
     .catch((err) => {
