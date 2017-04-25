@@ -20,10 +20,18 @@ class Home extends React.Component {
       showForm: false,
       station_name: "",
       circonscription: "",
-      circonscriptionObject:{}
+      circonscriptionObject:{},
+      officeObject: {}
     }
 
+    this.toggleFormShow = this.toggleFormShow.bind(this);
     this.handleOfficeChange = this.handleOfficeChange.bind(this);
+  }
+
+  toggleFormShow(show){
+    this.setState({
+      showForm: show
+    });
   }
 
   handleOfficeChange(office){
@@ -37,7 +45,8 @@ class Home extends React.Component {
         showForm: true,
         station_name:office.station_name,
         circonscription: office.circonscription,
-        circonscriptionObject: json
+        circonscriptionObject: json,
+        officeObject: office,
       });
     })
     .catch((err) => {
@@ -50,13 +59,15 @@ class Home extends React.Component {
       <div className={s.root}>
         <div className={s.container}>
           <h1 className={s.sectionTitle}>مركز الاقتراع</h1>
-          <SelectOffice officeChange={this.handleOfficeChange}/>
+          <SelectOffice officeChange={this.handleOfficeChange} />
         </div>
 
         <GeneratedForm station_name={this.state.station_name}
         circonscription={this.state.circonscription}
         circonscriptionObject={this.state.circonscriptionObject}
-        showForm={this.state.showForm} />
+        showForm={this.state.showForm}
+        toggleFormShow = {this.toggleFormShow}
+        office = {this.state.officeObject} />
       </div>
     );
   }

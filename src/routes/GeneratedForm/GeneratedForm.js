@@ -14,7 +14,8 @@ import NumberInput from '../numberInput';
 import CheckboxInput from '../CheckboxInput';
 import TextInput from '../TextInput';
 import SelectOffice from '../SelectOffice';
-import Parties from '../Parties'
+import Parties from '../Parties';
+import Message from '../../Components/Message';
 
 class GeneratedForm extends React.Component {
   constructor(props) {
@@ -25,12 +26,12 @@ class GeneratedForm extends React.Component {
   }
 
   updateFilledTimes(obj){
-    const filled = obj.filled != undefined ? 1 : obj.filled + 1;
+    const filled = obj.filled === undefined ? 1 : obj.filled + 1;
 
     fetch('/api/Office/' + obj._id, {
       method: 'PUT',
       headers: {'Content-Type':'application/json'},
-      body: {"filled" : filled}
+      body: JSON.stringify({"filled" : filled})
     })
     .then(res => res.json())
     .then((json) => {
@@ -43,11 +44,43 @@ class GeneratedForm extends React.Component {
 
   handleFormSubmit(event) {
     event.preventDefault();
-    console.log(this.refs.form.elements);
+    let body = {};
+    body["office"] = this.props.office.number;
+    body["filledBy"] = localStorage.id;
+
+    this.updateFilledTimes(this.props.office);
+
+    for (let i of this.refs.form.elements) {
+      const validInput = i.type === "text" || i.type === "number" || i.type === "checkbox" ? true : false;
+
+      if (validInput){
+        // case parties
+        if (i.id === ""){
+          body[i.getAttribute("label")] = i.value ;
+        }
+        // other inputs
+        else{
+          body[i.id] = i.type === 'checkbox' ? i.checked : i.value;
+        }
+      }
+    }
+
+    fetch('/api/PV/' , {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(body)
+    })
+    .then(res => res.json())
+    .then((json) => {
+      console.log(json);
+      this.props.toggleFormShow(false);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
   }
 
-  handleChange(value, name){
-    // this.setState({ [name]: value });
+  handleChange(event){
   }
 
 
@@ -108,7 +141,15 @@ class GeneratedForm extends React.Component {
         </form>
       );
     }
-    else return null;
+    else {
+      return (
+        <div className={s.container}>
+          <div className={s.row}>
+            <Message show={true} text="PV rempli avec succées !"/>
+          </div>
+        </div>
+      );
+    }
   }
 }
 

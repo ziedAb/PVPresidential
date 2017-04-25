@@ -28,7 +28,7 @@ class numberInput extends React.Component {
     return (
       <div className={`${s.formGroup} ${ this.props.className }`}>
         <label className={s.label} htmlFor={this.props.id}>
-          {this.props.label}
+          {this.props.index}- {this.props.label}
         </label>
         <input
           className={s.input}
@@ -36,6 +36,7 @@ class numberInput extends React.Component {
           value={this.props.value}
           type="number"
           name={this.props.name}
+          label={this.props.label}
           onChange={this.handleChange}
         />
       </div>

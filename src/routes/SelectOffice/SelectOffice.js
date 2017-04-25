@@ -33,9 +33,9 @@ class SelectOffice extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const officeID = Number.parseInt(this.state.circonscription.slice(1)+this.state.delegation+this.state.subDelegation+this.state.center+this.state.station,10);
+    const office = Number.parseInt(this.state.circonscription.slice(1)+this.state.delegation+this.state.subDelegation+this.state.center+this.state.station,10);
 
-    fetch('/api/Office/'+officeID, {
+    fetch('/api/Office/'+ office, {
       method: 'GET',
       headers: {'Content-Type':'application/json'}
     })

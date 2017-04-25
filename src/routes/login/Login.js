@@ -60,7 +60,7 @@ class Login extends React.Component {
         });
 
         // save the token
-        Auth.authenticateUser(xhr.response.token, email);
+        Auth.authenticateUser(xhr.response.token, email, xhr.response.user.id);
         // change the current URL to /
         history.push("/");
       } else {

@@ -21,7 +21,7 @@ class Parties extends React.Component {
   render() {
     if (this.props.list != undefined){
       var list = this.props.list.map((item, index) => {
-        return <NumberInput className={`${ s.col } ${ s.oneThird } ${s.marginRow}`} key={ index + 1 } label={`${ index + 1 }- ${ item.name }`}/>
+        return <NumberInput className={`${ s.col } ${ s.oneThird } ${s.marginRow}`} key={ index + 1 } index={ index + 1 } label={item.name}/>
       });
       return <div className={s.partiesContainer}>{list}</div>;
     }
