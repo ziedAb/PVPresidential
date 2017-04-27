@@ -21,6 +21,14 @@
   min-height: 380px;
 }
 
+.col{
+  padding-left: 0px;
+}
+
+.extract{
+  width: 100%;
+}
+
 .select{
   width: 100%;
   padding: 10px 15px;

@@ -32,7 +32,7 @@ class Home extends React.Component {
       station: ''
     }
 
-    this.toggleFormShow = this.toggleFormShow.bind(this);
+    this.updateStates = this.updateStates.bind(this);
     this.handleOfficeChange = this.handleOfficeChange.bind(this);
     this.handleSearchInput = this.handleSearchInput.bind(this);
   }
@@ -61,9 +61,10 @@ class Home extends React.Component {
     this.setState({ [name]: value });
   }
 
-  toggleFormShow(show){
+  updateStates(show, tocorrect){
     this.setState({
-      showForm: show
+      showForm: show,
+      tocorrect: tocorrect
     });
   }
 
@@ -107,7 +108,7 @@ class Home extends React.Component {
         circonscriptionObject={this.state.circonscriptionObject}
         showForm={this.state.showForm}
         tocorrect={this.state.tocorrect}
-        toggleFormShow = {this.toggleFormShow}
+        updateStates = {this.updateStates}
         office = {this.state.officeObject} />
       </div>
     );

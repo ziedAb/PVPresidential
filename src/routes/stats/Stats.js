@@ -25,12 +25,15 @@ class Stats extends React.Component {
       errorFilledNumber : "",
       errorFilledObject : {},
       allPVSNumber : "",
-      allPVSObject : {}
+      allPVSObject : {},
+      csv : '',
+      csvURL : ''
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.redirectPV = this.redirectPV.bind(this);
+    this.pvExtract = this.pvExtract.bind(this);
   }
 
   componentDidMount(){
@@ -47,6 +50,18 @@ class Stats extends React.Component {
     .catch((err) => {
       console.error(err);
     });
+  }
+
+  pvExtract(){
+    const items = this.state.allPVSObject;
+    if (items.length > 0){
+      const replacer = (key, value) => value === null ? '' : value ;// specify how you want to handle null values here
+      const header = Object.keys(items[0]);
+      let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','));
+      csv.unshift(header.join(','));
+      csv = csv.join('\r\n');
+      return csv;
+    }
   }
 
   handleSubmit(e){
@@ -85,7 +100,7 @@ class Stats extends React.Component {
     });
 
     // get all PVs in circonscription
-    fetch('/api/Stats/' + circSelect , {
+    fetch('/api/PVcirc/' + circSelect , {
       method: 'GET',
       headers: {'Content-Type':'application/json'}
     })
@@ -93,9 +108,11 @@ class Stats extends React.Component {
     .then((json) => {
       this.setState({
         allPVSNumber : json.length,
-        allPVSObject : json
+        allPVSObject : json,
+        csv : this.pvExtract(),
+        csvURL : 'data:application/csv;charset=utf-8,' +  encodeURIComponent(this.pvExtract())
       });
-      // debugger;
+      console.log(this.pvExtract());
     })
     .catch((err) => {
       console.error(err);
@@ -179,11 +196,11 @@ class Stats extends React.Component {
               </div>
 
               <span className={`${ s.col } ${ s.oneThird } `}>
-                <input type="submit" className={s.submit} value="search" />
+                <input type="submit" className={s.submit} value="rechercher" />
               </span>
 
               <span className={`${ s.col } ${ s.oneThird } `}>
-                extraire données
+                <a href={ this.state.csvURL } className={`${ s.submit } ${ s.extract } `} target='_blank' download='myfi.csv' > Extraire PV remplis </a>
               </span>
             </div>
 

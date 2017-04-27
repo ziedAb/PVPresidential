@@ -40,7 +40,6 @@ class GeneratedForm extends React.Component {
       })
       .then(res => res.json())
       .then((json) => {
-        debugger;
         //clean objects
         for(let i of json) {
           delete i.filledBy; delete i._id; delete i.__v;
@@ -76,6 +75,7 @@ class GeneratedForm extends React.Component {
     event.preventDefault();
     let body = {};
     body["office"] = this.props.office.number;
+    body["circonscription"] = this.props.office.circonscription;
     body["filledBy"] = localStorage.id;
 
     for (let i of this.refs.form.elements) {
@@ -114,7 +114,7 @@ class GeneratedForm extends React.Component {
             console.error(err);
           });
         }
-        this.props.toggleFormShow(false);
+        this.props.updateStates(false, false);
         this.setState({
           isSubmit : true
         });
@@ -135,7 +135,7 @@ class GeneratedForm extends React.Component {
       })
       .then(res => res.json())
       .then((json) => {
-        this.props.toggleFormShow(false);
+        this.props.updateStates(false, false);
         this.setState({
           isSubmit : true
         });
