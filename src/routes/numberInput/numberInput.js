@@ -38,6 +38,7 @@ class numberInput extends React.Component {
           name={this.props.name}
           label={this.props.label}
           onChange={this.handleChange}
+          autoComplete="off"
         />
       </div>
     );

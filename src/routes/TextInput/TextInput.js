@@ -37,6 +37,8 @@ class TextInput extends React.Component {
           type="text"
           name={this.props.name}
           onChange={this.handleChange}
+          placeholder="hhmm"
+          autoComplete="off"
         />
       </div>
     );

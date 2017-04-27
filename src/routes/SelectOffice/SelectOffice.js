@@ -20,7 +20,8 @@ class SelectOffice extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filled: false
+      filled: false,
+      noPV: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -36,17 +37,23 @@ class SelectOffice extends React.Component {
     })
     .then(res => res.json())
     .then((json) => {
-      if( json.filled === 2){
-        this.setState({filled: true});
+      if ( this.props.tocorrect === true ){
+        this.setState({filled: false, noPV: false});
+        this.props.officeChange(json, true);
+      }
+      else if( json.filled === 2){
+        this.setState({filled: true, noPV: false});
       }
       else {
-        this.setState({filled: false});
-        this.props.officeChange(json);
+        this.setState({filled: false, noPV: false});
+        this.props.officeChange(json, false);
       }
 
     })
     .catch((err) => {
-      console.error(err);
+      this.setState({
+        noPV: true
+      })
     });
   }
 
@@ -69,6 +76,7 @@ class SelectOffice extends React.Component {
         </div>
         <div className={s.row}>
           <Message show={this.state.filled} text="Ce PV a déja été saisi 2 fois"/>
+          <Message show={this.state.noPV} text="Veuillez verifier le numéro du PV"/>
         </div>
       </form>
     );

@@ -22,15 +22,14 @@ class GeneratedForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSubmit : false,
-      isPVdifferent : false
+      isSubmit : false
     }
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
-  updateFilledTimes(obj, firstPV){
+  updateFilledTimes(obj){
     const filled = obj.filled === undefined ? 1 : obj.filled + 1;
     let PVerror = false;
 
@@ -41,11 +40,13 @@ class GeneratedForm extends React.Component {
       })
       .then(res => res.json())
       .then((json) => {
+        debugger;
         //clean objects
-        delete firstPV.filledBy; delete firstPV._id; delete firstPV.__v;
-        delete json.filledBy; delete json._id; delete json.__v;
+        for(let i of json) {
+          delete i.filledBy; delete i._id; delete i.__v;
+        }
         //compare 2 PVs
-        PVerror = _.isEqual(firstPV, json);
+        PVerror = _.isEqual(json[0], json[1]);
         this.updateOffice(obj,filled,!PVerror);
       })
       .catch((err) => {
@@ -65,7 +66,6 @@ class GeneratedForm extends React.Component {
     })
     .then(res => res.json())
     .then((json) => {
-      console.log(json);
     })
     .catch((err) => {
       console.error(err);
@@ -93,22 +93,58 @@ class GeneratedForm extends React.Component {
       }
     }
 
-    fetch('/api/PV/' , {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(body)
-    })
-    .then(res => res.json())
-    .then((json) => {
-      this.props.toggleFormShow(false);
-      this.setState({
-        isSubmit : true
+    // update all PVs matching office number
+    if (this.props.tocorrect === true){
+      fetch('/api/PV/' + this.props.office.number, {
+        method: 'GET',
+        headers: {'Content-Type':'application/json'}
+      })
+      .then(res => res.json())
+      .then((json) => {
+        for (let i of json){
+          fetch('/api/PV/' + i._id , {
+            method: 'PUT',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(body)
+          })
+          .then(res => res.json())
+          .then((json) => {
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+        }
+        this.props.toggleFormShow(false);
+        this.setState({
+          isSubmit : true
+        });
+        this.updateOffice(this.props.office, 2, false);
+      })
+      .catch((err) => {
+        console.error(err);
       });
-      this.updateFilledTimes(this.props.office, json);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+    }
+
+
+    // Post PV
+    else{
+      fetch('/api/PV/' , {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(body)
+      })
+      .then(res => res.json())
+      .then((json) => {
+        this.props.toggleFormShow(false);
+        this.setState({
+          isSubmit : true
+        });
+        this.updateFilledTimes(this.props.office, json);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    }
   }
 
   handleChange(event){

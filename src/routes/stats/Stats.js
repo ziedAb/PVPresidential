@@ -28,7 +28,7 @@ class Stats extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
-    this.handleTest = this.handleTest.bind(this);
+    this.redirectPV = this.redirectPV.bind(this);
   }
 
   componentDidMount(){
@@ -57,7 +57,6 @@ class Stats extends React.Component {
     })
     .then(res => res.json())
     .then((json) => {
-      console.log(json);
       this.setState({
         unfilledNumber : json.length,
         unfilledObject : json
@@ -74,7 +73,6 @@ class Stats extends React.Component {
     })
     .then(res => res.json())
     .then((json) => {
-      console.log(json);
       this.setState({
         oneTimeFilledNumber : json.length,
         oneTimeFilledObject : json
@@ -91,7 +89,6 @@ class Stats extends React.Component {
     })
     .then(res => res.json())
     .then((json) => {
-      console.log(json);
       this.setState({
         errorFilledNumber : json.length,
         errorFilledObject : json
@@ -108,39 +105,44 @@ class Stats extends React.Component {
     });
   }
 
-  handleTest(e){
+  redirectPV(e){
     e.preventDefault();
-    history.push({
-      pathname: '/',
-      state: {
-        circonscriptionOffice: 10,
-        delegation: '11',
-        subDelegation: '01',
-        center: '001',
-        station: '01',
-      }
-    });
+    const off = e.target.textContent.replace(/\s/g, ''),
+          circonscriptionOffice = "0" + off.substr(0,1),
+          delegation = off.substr(1,2),
+          subDelegation = off.substr(3,2),
+          center = off.substr(5,3),
+          station = off.substr(8,2);
+    // save in localStorage
+    localStorage.setItem('circonscriptionOffice', circonscriptionOffice);
+    localStorage.setItem('delegation', delegation);
+    localStorage.setItem('subDelegation', subDelegation);
+    localStorage.setItem('center', center);
+    localStorage.setItem('station', station);
+
+    history.push('/');
   }
 
   render() {
+    // array of circonscriptions
     const arr = this.state.circonscriptions;
     var list = Object.keys(arr).map((key, index) => {
       return <option key={ index + 1 } value={arr[key].name}> {arr[key].name} </option>
     });
-
+    // array of unfilled Objects
     const unfilledObject = this.state.unfilledObject;
     var listUnfilled = Object.keys(unfilledObject).map((key, index) => {
       return <span key={ index + 1 } className={`${ s.col } ${ s.oneTen }`}> {unfilledObject[key].number} </span>
     });
-
+    // array of one time filled objects
     const oneTimeFilledObject = this.state.oneTimeFilledObject;
     var listOneTimeFilled = Object.keys(oneTimeFilledObject).map((key, index) => {
       return <span key={ index + 1 } className={`${ s.col } ${ s.oneTen }`}> {oneTimeFilledObject[key].number} </span>
     });
-
+    // array of objects with errors
     const errorFilledObject = this.state.errorFilledObject;
     var listerrorFilled = Object.keys(errorFilledObject).map((key, index) => {
-      return <span key={ index + 1 } className={`${ s.col } ${ s.oneTen }`}> {errorFilledObject[key].number} </span>
+      return <span onClick={this.redirectPV} key={ index + 1 } className={`${ s.col } ${ s.oneTen } ${ s.tocorrect }`}> {errorFilledObject[key].number} </span>
     });
 
     return (
@@ -186,8 +188,6 @@ class Stats extends React.Component {
             <div className={`${ s.row } ${s.ltr}`} >
               {listerrorFilled}
             </div>
-
-            <button onClick={this.handleTest}> click </button>
 
           </form>
         </div>

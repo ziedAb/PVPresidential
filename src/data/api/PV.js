@@ -11,8 +11,17 @@ router.post('/PV', function(req, res, next){
 
 // get entry from the db
 router.get('/PV/:office', function(req, res, next){
-    PV.findOne({office: req.params.office}).then(function(element){
+    PV.find({office: req.params.office}).then(function(element){
         res.send(element);
+    }).catch(next);
+});
+
+// update all PVs of this matching office
+router.put('/PV/:id', function(req, res, next){
+    PV.findByIdAndUpdate({_id: req.params.id}, req.body).then(function(){
+        PV.findOne({_id: req.params.id}).then(function(elt){
+            res.send(elt);
+        });
     }).catch(next);
 });
 

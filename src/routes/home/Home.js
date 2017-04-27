@@ -20,12 +20,13 @@ class Home extends React.Component {
 
     this.state = {
       showForm: false,
+      tocorrect: false,
       station_name: "",
       circonscription: "",
       circonscriptionObject:{},
       officeObject: {},
-      circonscriptionOffice: '01',
-      delegation: '4',
+      circonscriptionOffice: '',
+      delegation: '',
       subDelegation: '',
       center: '',
       station: ''
@@ -34,13 +35,26 @@ class Home extends React.Component {
     this.toggleFormShow = this.toggleFormShow.bind(this);
     this.handleOfficeChange = this.handleOfficeChange.bind(this);
     this.handleSearchInput = this.handleSearchInput.bind(this);
-    this.handleJob = this.handleJob.bind(this);
   }
 
-  handleJob(){
+  componentDidMount(){
+    if (localStorage.center !== undefined){
       this.setState({
-        center: '99'
-      })
+        circonscriptionOffice: localStorage.circonscriptionOffice,
+        delegation: localStorage.delegation,
+        subDelegation: localStorage.subDelegation,
+        center: localStorage.center,
+        station: localStorage.station,
+        tocorrect : true
+      });
+
+      //clean localStorage
+      localStorage.removeItem('circonscriptionOffice');
+      localStorage.removeItem('delegation');
+      localStorage.removeItem('subDelegation');
+      localStorage.removeItem('center');
+      localStorage.removeItem('station');
+    }
   }
 
   handleSearchInput(value, name){
@@ -53,7 +67,7 @@ class Home extends React.Component {
     });
   }
 
-  handleOfficeChange(office){
+  handleOfficeChange(office, tocorrect){
     fetch('/api/Circonscription/' + office.circonscription , {
       method: 'GET',
       headers: {'Content-Type':'application/json'}
@@ -65,7 +79,7 @@ class Home extends React.Component {
         station_name:office.station_name,
         circonscription: office.circonscription,
         circonscriptionObject: json,
-        officeObject: office,
+        officeObject: office
       });
     })
     .catch((err) => {
@@ -78,20 +92,21 @@ class Home extends React.Component {
       <div className={s.root}>
         <div className={s.container}>
           <h1 className={s.sectionTitle}>مركز الاقتراع</h1>
-          <button onClick={this.handleJob}> test </button>
           <SelectOffice officeChange={this.handleOfficeChange}
             handleSearchInput = {this.handleSearchInput}
             circonscriptionOffice =  {this.state.circonscriptionOffice}
             delegation = {this.state.delegation}
             subDelegation = {this.state.subDelegation}
             center = {this.state.center}
-            station = {this.state.station}/>
+            station = {this.state.station}
+            tocorrect={this.state.tocorrect}/>
         </div>
 
         <GeneratedForm station_name={this.state.station_name}
         circonscription={this.state.circonscription}
         circonscriptionObject={this.state.circonscriptionObject}
         showForm={this.state.showForm}
+        tocorrect={this.state.tocorrect}
         toggleFormShow = {this.toggleFormShow}
         office = {this.state.officeObject} />
       </div>
