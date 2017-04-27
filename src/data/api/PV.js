@@ -9,9 +9,16 @@ router.post('/PV', function(req, res, next){
     }).catch(next);
 });
 
-// get entry from the db
+// get PV by office number
 router.get('/PV/:office', function(req, res, next){
     PV.find({office: req.params.office}).then(function(element){
+        res.send(element);
+    }).catch(next);
+});
+
+// get PV by circonscription
+router.get('/PVcirc/:circonscription', function(req, res, next){
+    PV.find({circonscription: req.params.circonscription}).then(function(element){
         res.send(element);
     }).catch(next);
 });

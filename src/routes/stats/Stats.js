@@ -23,7 +23,9 @@ class Stats extends React.Component {
       oneTimeFilledNumber : "",
       oneTimeFilledObject : {},
       errorFilledNumber : "",
-      errorFilledObject : {}
+      errorFilledObject : {},
+      allPVSNumber : "",
+      allPVSObject : {}
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -82,6 +84,23 @@ class Stats extends React.Component {
       console.error(err);
     });
 
+    // get all PVs in circonscription
+    fetch('/api/Stats/' + circSelect , {
+      method: 'GET',
+      headers: {'Content-Type':'application/json'}
+    })
+    .then(res => res.json())
+    .then((json) => {
+      this.setState({
+        allPVSNumber : json.length,
+        allPVSObject : json
+      });
+      // debugger;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+
     // get erronated PVs
     fetch('/api/OfficeError/' + circSelect, {
       method: 'GET',
@@ -107,12 +126,12 @@ class Stats extends React.Component {
 
   redirectPV(e){
     e.preventDefault();
-    const off = e.target.textContent.replace(/\s/g, ''),
-          circonscriptionOffice = "0" + off.substr(0,1),
-          delegation = off.substr(1,2),
-          subDelegation = off.substr(3,2),
-          center = off.substr(5,3),
-          station = off.substr(8,2);
+    const off = e.target.textContent.replace(/\s/g, '').length === 10 ? "0" + e.target.textContent.replace(/\s/g, '') : e.target.textContent.replace(/\s/g, '') ,
+          circonscriptionOffice = off.substr(0,2),
+          delegation = off.substr(2,2),
+          subDelegation = off.substr(4,2),
+          center = off.substr(6,3),
+          station = off.substr(9,2);
     // save in localStorage
     localStorage.setItem('circonscriptionOffice', circonscriptionOffice);
     localStorage.setItem('delegation', delegation);

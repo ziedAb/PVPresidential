@@ -10,10 +10,17 @@ const Office = require('../models/Office');
 //     });
 // });
 
-// get items where having number of filled in circonscription
+// get items having n number of filled in circonscription
 router.get('/Stats/:circonscription/:filled', function(req, res, next){
     const filled = req.params.filled === null ? null : req.params.filled
     Office.find({circonscription: req.params.circonscription, filled: filled}).then(function(element){
+      res.send(element);
+    });
+});
+
+// get all items in circonscription
+router.get('/Stats/:circonscription', function(req, res, next){
+    Office.find({circonscription: req.params.circonscription}).then(function(element){
       res.send(element);
     });
 });

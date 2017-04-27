@@ -29,7 +29,8 @@ class SelectOffice extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const office = Number.parseInt(this.props.circonscriptionOffice.slice(1)+this.props.delegation+this.props.subDelegation+this.props.center+this.props.station,10);
+    const circOffice = this.props.circonscriptionOffice.length === 10 ? this.props.circonscriptionOffice.slice(1) : this.props.circonscriptionOffice;
+    const office = Number.parseInt(circOffice+this.props.delegation+this.props.subDelegation+this.props.center+this.props.station,10);
 
     fetch('/api/Office/'+ office, {
       method: 'GET',
