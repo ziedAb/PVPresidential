@@ -11,7 +11,8 @@ const OfficeSchema = new Schema({
     number: Number,
     station_name: String,
     center_name: String,
-    filled: Number
+    filled: Number,
+    error: Boolean
 });
 
 const Office = mongoose.model('Office', OfficeSchema);

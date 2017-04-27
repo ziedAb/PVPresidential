@@ -12,20 +12,39 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Home.css';
 import GeneratedForm from '../GeneratedForm';
 import SelectOffice from '../SelectOffice';
+import history from '../../core/history';
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       showForm: false,
       station_name: "",
       circonscription: "",
       circonscriptionObject:{},
-      officeObject: {}
+      officeObject: {},
+      circonscriptionOffice: '01',
+      delegation: '4',
+      subDelegation: '',
+      center: '',
+      station: ''
     }
 
     this.toggleFormShow = this.toggleFormShow.bind(this);
     this.handleOfficeChange = this.handleOfficeChange.bind(this);
+    this.handleSearchInput = this.handleSearchInput.bind(this);
+    this.handleJob = this.handleJob.bind(this);
+  }
+
+  handleJob(){
+      this.setState({
+        center: '99'
+      })
+  }
+
+  handleSearchInput(value, name){
+    this.setState({ [name]: value });
   }
 
   toggleFormShow(show){
@@ -35,7 +54,7 @@ class Home extends React.Component {
   }
 
   handleOfficeChange(office){
-    fetch('/api/Circonscription/' + office.circonscription.toUpperCase(), {
+    fetch('/api/Circonscription/' + office.circonscription , {
       method: 'GET',
       headers: {'Content-Type':'application/json'}
     })
@@ -59,7 +78,14 @@ class Home extends React.Component {
       <div className={s.root}>
         <div className={s.container}>
           <h1 className={s.sectionTitle}>مركز الاقتراع</h1>
-          <SelectOffice officeChange={this.handleOfficeChange} />
+          <button onClick={this.handleJob}> test </button>
+          <SelectOffice officeChange={this.handleOfficeChange}
+            handleSearchInput = {this.handleSearchInput}
+            circonscriptionOffice =  {this.state.circonscriptionOffice}
+            delegation = {this.state.delegation}
+            subDelegation = {this.state.subDelegation}
+            center = {this.state.center}
+            station = {this.state.station}/>
         </div>
 
         <GeneratedForm station_name={this.state.station_name}

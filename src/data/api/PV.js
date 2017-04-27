@@ -9,4 +9,11 @@ router.post('/PV', function(req, res, next){
     }).catch(next);
 });
 
+// get entry from the db
+router.get('/PV/:office', function(req, res, next){
+    PV.findOne({office: req.params.office}).then(function(element){
+        res.send(element);
+    }).catch(next);
+});
+
 module.exports = router;

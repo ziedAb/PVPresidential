@@ -20,11 +20,6 @@ class SelectOffice extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      circonscription: '04',
-      delegation: '01',
-      subDelegation: '01',
-      center: '001',
-      station: '01',
       filled: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,7 +28,7 @@ class SelectOffice extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const office = Number.parseInt(this.state.circonscription.slice(1)+this.state.delegation+this.state.subDelegation+this.state.center+this.state.station,10);
+    const office = Number.parseInt(this.props.circonscriptionOffice.slice(1)+this.props.delegation+this.props.subDelegation+this.props.center+this.props.station,10);
 
     fetch('/api/Office/'+ office, {
       method: 'GET',
@@ -44,7 +39,7 @@ class SelectOffice extends React.Component {
       if( json.filled === 2){
         this.setState({filled: true});
       }
-      else {  
+      else {
         this.setState({filled: false});
         this.props.officeChange(json);
       }
@@ -56,18 +51,18 @@ class SelectOffice extends React.Component {
   }
 
   handleChange(value, name){
-    this.setState({ [name]: value });
+    this.props.handleSearchInput(value, name);
   }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className={s.row}>
-          <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} value={this.state.station} maxLength="2" id="station" name="station" label="مكتب الاقتراع"/>
-          <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} value={this.state.center} maxLength="3" id="center" name="center" label="مركز الاقتراع"/>
-          <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} value={this.state.subDelegation} maxLength="2" id="subDelegation" name="subDelegation" label="العمادة"/>
-          <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} value={this.state.delegation} maxLength="2" id="delegation" name="delegation" label="المعتمدية"/>
-          <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} value={this.state.circonscription} maxLength="2" id="circonscription" name="circonscription" label="الدائرة الانتخابية"/>
+          <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} value={this.props.station} maxLength="2" id="station" name="station" label="مكتب الاقتراع"/>
+          <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} value={this.props.center} maxLength="3" id="center" name="center" label="مركز الاقتراع"/>
+          <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} value={this.props.subDelegation} maxLength="2" id="subDelegation" name="subDelegation" label="العمادة"/>
+          <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} value={this.props.delegation} maxLength="2" id="delegation" name="delegation" label="المعتمدية"/>
+          <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} value={this.props.circonscriptionOffice} maxLength="2" id="circonscription" name="circonscriptionOffice" label="الدائرة الانتخابية"/>
         </div>
         <div className={s.row}>
           <input type="submit" className={s.submit} value="search" />

@@ -95,6 +95,9 @@ app.use('/api', require('./data/api/Office'));
 app.use('/api', require('./data/api/Circonscription'));
 app.use('/api', require('./data/api/User'));
 app.use('/api', require('./data/api/Suivi'));
+app.use('/api', require('./data/api/Stats'));
+app.use('/api', require('./data/api/Rout'));
+app.use('/api', require('./data/api/OfficeError'));
 app.use('/auth', require('./data/api/auth'));
 
 //

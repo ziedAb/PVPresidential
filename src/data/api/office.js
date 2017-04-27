@@ -2,7 +2,7 @@ const express = require ('express');
 const router = express.Router();
 const Office = require('../models/Office');
 
-// get a list of ninjas from the db
+// get a list from the db
 router.get('/Office/:circonscription', function(req, res, next){
     Office.findOne({number: req.params.circonscription}).then(function(element){
       res.send(element);

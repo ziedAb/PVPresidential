@@ -8,6 +8,7 @@
  */
 
 import React from 'react';
+import _ from 'lodash';
 import s from './GeneratedForm.css';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import NumberInput from '../numberInput';
@@ -21,20 +22,46 @@ class GeneratedForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSubmit : false
+      isSubmit : false,
+      isPVdifferent : false
     }
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
-  updateFilledTimes(obj){
+  updateFilledTimes(obj, firstPV){
     const filled = obj.filled === undefined ? 1 : obj.filled + 1;
+    let PVerror = false;
 
+    if (filled === 2){
+      fetch('/api/PV/' + obj.number, {
+        method: 'GET',
+        headers: {'Content-Type':'application/json'}
+      })
+      .then(res => res.json())
+      .then((json) => {
+        //clean objects
+        delete firstPV.filledBy; delete firstPV._id; delete firstPV.__v;
+        delete json.filledBy; delete json._id; delete json.__v;
+        //compare 2 PVs
+        PVerror = _.isEqual(firstPV, json);
+        this.updateOffice(obj,filled,!PVerror);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    }
+    else{
+      this.updateOffice(obj,filled,PVerror);
+    }
+  }
+
+  updateOffice(obj, filled, error){
     fetch('/api/Office/' + obj._id, {
       method: 'PUT',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({"filled" : filled})
+      body: JSON.stringify({"filled" : filled, "error" : error})
     })
     .then(res => res.json())
     .then((json) => {
@@ -50,8 +77,6 @@ class GeneratedForm extends React.Component {
     let body = {};
     body["office"] = this.props.office.number;
     body["filledBy"] = localStorage.id;
-
-    this.updateFilledTimes(this.props.office);
 
     for (let i of this.refs.form.elements) {
       const validInput = i.type === "text" || i.type === "number" || i.type === "checkbox" ? true : false;
@@ -75,11 +100,11 @@ class GeneratedForm extends React.Component {
     })
     .then(res => res.json())
     .then((json) => {
-      console.log(json);
       this.props.toggleFormShow(false);
       this.setState({
         isSubmit : true
       });
+      this.updateFilledTimes(this.props.office, json);
     })
     .catch((err) => {
       console.error(err);
