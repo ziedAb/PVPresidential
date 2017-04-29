@@ -52,6 +52,7 @@ class GeneratedForm extends React.Component {
 
         // add error class to different inputs
         for (let j of formrefs) {
+          // set error colors
           if ( differences.includes(j.id) || differences.includes(j.getAttribute("label")) ){
             if (j.type === "checkbox"){
               j.nextElementSibling.style.color = "red";
@@ -60,15 +61,20 @@ class GeneratedForm extends React.Component {
               j.style.borderColor = "red";
             }
           }
+
+          // set values
           else{
             if (j.type === "checkbox"){
               j.checked = json[0][j.id];
             }
-            else if (j.id === ""){
-              j.value = json[0][j.getAttribute("label")];
-            }
-            else{
-              j.value = json[0][j.id];
+            else if (j.type === "text" || j.type === "number"){
+
+              if (j.id === ""){
+                j.value = json[0][j.getAttribute("label")];
+              }
+              else{
+                j.value = json[0][j.id];
+              }
             }
           }
         }
