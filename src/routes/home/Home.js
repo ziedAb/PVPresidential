@@ -45,7 +45,7 @@ class Home extends React.Component {
         subDelegation: localStorage.subDelegation,
         center: localStorage.center,
         station: localStorage.station,
-        tocorrect : true
+        tocorrect : localStorage.tocorrect
       });
 
       //clean localStorage
@@ -54,6 +54,7 @@ class Home extends React.Component {
       localStorage.removeItem('subDelegation');
       localStorage.removeItem('center');
       localStorage.removeItem('station');
+      localStorage.removeItem('tocorrect');
     }
   }
 

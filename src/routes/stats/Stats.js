@@ -141,7 +141,7 @@ class Stats extends React.Component {
     });
   }
 
-  redirectPV(e){
+  redirectPV(e, tocorrect){
     e.preventDefault();
     const off = e.target.textContent.replace(/\s/g, '').length === 10 ? "0" + e.target.textContent.replace(/\s/g, '') : e.target.textContent.replace(/\s/g, '') ,
           circonscriptionOffice = off.substr(0,2),
@@ -155,6 +155,7 @@ class Stats extends React.Component {
     localStorage.setItem('subDelegation', subDelegation);
     localStorage.setItem('center', center);
     localStorage.setItem('station', station);
+    localStorage.setItem('tocorrect', tocorrect);
 
     history.push('/');
   }
@@ -173,12 +174,12 @@ class Stats extends React.Component {
     // array of one time filled objects
     const oneTimeFilledObject = this.state.oneTimeFilledObject;
     var listOneTimeFilled = Object.keys(oneTimeFilledObject).map((key, index) => {
-      return <span key={ index + 1 } className={`${ s.col } ${ s.oneTen }`}> {oneTimeFilledObject[key].number} </span>
+      return <span onClick={(e) => this.redirectPV(e, false)} key={ index + 1 } className={`${ s.col } ${ s.oneTen } ${ s.tocorrect }`}> {oneTimeFilledObject[key].number} </span>
     });
     // array of objects with errors
     const errorFilledObject = this.state.errorFilledObject;
     var listerrorFilled = Object.keys(errorFilledObject).map((key, index) => {
-      return <span onClick={this.redirectPV} key={ index + 1 } className={`${ s.col } ${ s.oneTen } ${ s.tocorrect }`}> {errorFilledObject[key].number} </span>
+      return <span onClick={(e) => this.redirectPV(e, true)} key={ index + 1 } className={`${ s.col } ${ s.oneTen } ${ s.tocorrect }`}> {errorFilledObject[key].number} </span>
     });
 
     return (
