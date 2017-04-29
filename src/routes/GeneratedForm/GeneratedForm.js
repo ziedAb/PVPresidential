@@ -29,6 +29,56 @@ class GeneratedForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidUpdate(prevProps, prevState){
+    // prefill form inputs when correcting errors
+    if (this.props.tocorrect === true && this.props.office.number !== undefined){
+      const formrefs = this.refs.form ;
+      // get list of PVs to correct
+      fetch('/api/PV/' + this.props.office.number, {
+        method: 'GET',
+        headers: {'Content-Type':'application/json'}
+      })
+      .then(res => res.json())
+      .then((json) => {
+        // clean objects
+        for(let i of json) {
+          delete i.filledBy; delete i._id; delete i.__v;
+        }
+        // compare 2 PVs and return differences
+        const differences = _.reduce(json[0], function(result, value, key) {
+            return _.isEqual(value, json[1][key]) ?
+                result : result.concat(key);
+        }, []);
+
+        // add error class to different inputs
+        for (let j of formrefs) {
+          if ( differences.includes(j.id) || differences.includes(j.getAttribute("label")) ){
+            if (j.type === "checkbox"){
+              j.nextElementSibling.style.color = "red";
+            }
+            else{
+              j.style.borderColor = "red";
+            }
+          }
+          else{
+            if (j.type === "checkbox"){
+              j.checked = json[0][j.id];
+            }
+            else if (j.id === ""){
+              j.value = json[0][j.getAttribute("label")];
+            }
+            else{
+              j.value = json[0][j.id];
+            }
+          }
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    }
+  }
+
   updateFilledTimes(obj){
     const filled = obj.filled === undefined ? 1 : obj.filled + 1;
     let PVerror = false;
@@ -171,7 +221,7 @@ class GeneratedForm extends React.Component {
               <div className={`${ s.col } ${ s.oneSix }`} > </div>
             </div>
 
-            <h1 className={s.sectionTitle}>معلومات غريبة</h1>
+            <h1 className={s.sectionTitle}>معلومات عن المكتب</h1>
 
             <div className={s.row}>
               <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="registeredVoters" label="عدد الناخبين المرسمين بمكتب الاقتراع"/>
@@ -192,7 +242,7 @@ class GeneratedForm extends React.Component {
             <h1 className={s.sectionTitle}>القائمات</h1>
             <Parties list={this.props.circonscriptionObject.parties}/>
 
-            <h1 className={s.sectionTitle}>أوذر ستوف</h1>
+            <h1 className={s.sectionTitle}>معلومات إنتخابية</h1>
             <div className={s.row}>
               <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="jListVotes" label="ي- الأصوات المصرح بها لكل القائمات" />
               <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="kCancelledVotes" label="ك- عدد أوراق التصويت الملغاة"/>
@@ -212,7 +262,7 @@ class GeneratedForm extends React.Component {
       return (
         <div className={s.container}>
           <div className={s.row}>
-            <Message show={this.state.isSubmit} text="PV rempli avec succées !"/>
+            <Message show={this.state.isSubmit} text="PV rempli avec succès !"/>
           </div>
         </div>
       );

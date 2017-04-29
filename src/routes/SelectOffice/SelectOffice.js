@@ -73,7 +73,7 @@ class SelectOffice extends React.Component {
           <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} value={this.props.circonscriptionOffice} maxLength="2" id="circonscription" name="circonscriptionOffice" label="الدائرة الانتخابية"/>
         </div>
         <div className={s.row}>
-          <input type="submit" className={s.submit} value="search" />
+          <input type="submit" className={s.submit} value="إبحث" />
         </div>
         <div className={s.row}>
           <Message show={this.state.filled} text="Ce PV a déja été saisi 2 fois"/>

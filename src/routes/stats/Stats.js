@@ -112,7 +112,7 @@ class Stats extends React.Component {
         csv : this.pvExtract(),
         csvURL : 'data:application/csv;charset=utf-8,' +  encodeURIComponent(this.pvExtract())
       });
-      console.log(this.pvExtract());
+      // console.log(this.pvExtract());
     })
     .catch((err) => {
       console.error(err);
