@@ -18,16 +18,10 @@ export default {
   path: '/',
 
   action() {
-    // if (Auth.isUserAuthenticated()){
-      return {
-        title: 'React Starter Kit',
-        component: <Layout><Home /></Layout>,
-      };
-    // }
-    // else {
-    //   return { redirect: '/login' };
-    // }
-
+    return {
+      title: 'React Starter Kit',
+      component: <Layout><Home /></Layout>,
+    };
   },
 
 };

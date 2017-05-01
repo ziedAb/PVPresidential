@@ -13,6 +13,7 @@ import s from './Home.css';
 import GeneratedForm from '../GeneratedForm';
 import SelectOffice from '../SelectOffice';
 import history from '../../core/history';
+import Auth from '../../core/Auth';
 
 class Home extends React.Component {
   constructor(props) {
@@ -38,23 +39,28 @@ class Home extends React.Component {
   }
 
   componentDidMount(){
-    if (localStorage.center !== undefined){
-      this.setState({
-        circonscriptionOffice: localStorage.circonscriptionOffice,
-        delegation: localStorage.delegation,
-        subDelegation: localStorage.subDelegation,
-        center: localStorage.center,
-        station: localStorage.station,
-        tocorrect : localStorage.tocorrect
-      });
+    if (Auth.isUserAuthenticated()){
+      if (localStorage.center !== undefined){
+        this.setState({
+          circonscriptionOffice: localStorage.circonscriptionOffice,
+          delegation: localStorage.delegation,
+          subDelegation: localStorage.subDelegation,
+          center: localStorage.center,
+          station: localStorage.station,
+          tocorrect : localStorage.tocorrect
+        });
 
-      //clean localStorage
-      localStorage.removeItem('circonscriptionOffice');
-      localStorage.removeItem('delegation');
-      localStorage.removeItem('subDelegation');
-      localStorage.removeItem('center');
-      localStorage.removeItem('station');
-      localStorage.removeItem('tocorrect');
+        //clean localStorage
+        localStorage.removeItem('circonscriptionOffice');
+        localStorage.removeItem('delegation');
+        localStorage.removeItem('subDelegation');
+        localStorage.removeItem('center');
+        localStorage.removeItem('station');
+        localStorage.removeItem('tocorrect');
+      }
+    }
+    else{
+      history.push("/login");
     }
   }
 

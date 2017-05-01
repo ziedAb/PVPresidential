@@ -35,8 +35,6 @@ router.get('/Suivi', function(req, res, next){
         }
       }
 
-
-      console.log(counts);
       res.send(counts);
     })
 });

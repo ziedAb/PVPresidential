@@ -12,6 +12,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Stats.css';
 import history from '../../core/history';
 import _ from 'lodash';
+import Auth from '../../core/Auth';
 
 class Stats extends React.Component {
   constructor(props) {
@@ -37,19 +38,24 @@ class Stats extends React.Component {
   }
 
   componentDidMount(){
-    fetch('/api/Circonscription', {
-      method: 'GET',
-      headers: {'Content-Type':'application/json'}
-    })
-    .then(res => res.json())
-    .then((json) => {
-      this.setState({
-        circonscriptions : json
+    if (Auth.isUserAuthenticated()){
+      fetch('/api/Circonscription', {
+        method: 'GET',
+        headers: {'Content-Type':'application/json'}
+      })
+      .then(res => res.json())
+      .then((json) => {
+        this.setState({
+          circonscriptions : json
+        });
+      })
+      .catch((err) => {
+        console.error(err);
       });
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+    }
+    else{
+      history.push("/login");
+    }
   }
 
   pvExtract(){

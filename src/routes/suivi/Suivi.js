@@ -10,6 +10,8 @@
 import React, { PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Suivi.css';
+import history from '../../core/history';
+import Auth from '../../core/Auth';
 
 class Suivi extends React.Component {
 
@@ -21,19 +23,24 @@ class Suivi extends React.Component {
   }
 
   componentDidMount(){
-    fetch('/api/Suivi/', {
-      method: 'GET',
-      headers: {'Content-Type':'application/json'}
-    })
-    .then(res => res.json())
-    .then((json) => {
-      this.setState({
-        userStats : json
+    if (Auth.isUserAuthenticated()){
+      fetch('/api/Suivi/', {
+        method: 'GET',
+        headers: {'Content-Type':'application/json'}
+      })
+      .then(res => res.json())
+      .then((json) => {
+        this.setState({
+          userStats : json
+        });
+      })
+      .catch((err) => {
+        console.error(err);
       });
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+    }
+    else{
+      history.push("/login");
+    }
   }
 
   render() {
