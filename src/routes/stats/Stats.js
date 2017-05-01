@@ -250,7 +250,7 @@ class Stats extends React.Component {
               </span>
 
               <span className={`${ s.col } ${ s.oneThird } `}>
-                <a href={ this.state.csvURL } className={`${ s.submit } ${ s.extract } `} target='_blank' download='myfi.csv' > Extraire PV remplis </a>
+                <a href={ this.state.csvURL } className={`${ s.submit } ${ s.extract } `} target='_blank' download={`${ this.state.circSelect }.csv`} > Extraire PV remplis </a>
               </span>
             </div>
 
