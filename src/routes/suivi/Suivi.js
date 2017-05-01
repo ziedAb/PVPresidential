@@ -42,11 +42,13 @@ class Suivi extends React.Component {
       var list = Object.keys(arr).map(function(key, index) {
           return (
             <div className={`${ s.row } ${s.ltr}`} key={index}>
-              <span className={`${ s.col } ${ s.oneThird } ${s.ltr}`}> {key} </span>
-              <span className={`${ s.col } ${ s.oneThird } ${s.ltr}`}> {arr[key]} </span>
+              <span className={`${ s.col } ${ s.oneThird } ${s.ltr}`}> {arr[key].name} </span>
+              <span className={`${ s.col } ${ s.oneThird } ${s.ltr}`}> {arr[key].total} </span>
+              <span className={`${ s.col } ${ s.oneThird } ${s.ltr}`}> {arr[key].today} </span>
             </div>
           );
       });
+
       return (
         <div className={s.root}>
           <div className={s.container}>
@@ -54,7 +56,8 @@ class Suivi extends React.Component {
             <div >
               <div className={`${ s.row } ${s.ltr}`} >
                 <span className={`${ s.col } ${ s.oneThird } ${s.ltr} ${s.head}`}> Utilisateur </span>
-                <span className={`${ s.col } ${ s.oneThird } ${s.ltr} ${s.head}`}> Nombre de PV saisi </span> 
+                <span className={`${ s.col } ${ s.oneThird } ${s.ltr} ${s.head}`}> Total PV saisi </span>
+                <span className={`${ s.col } ${ s.oneThird } ${s.ltr} ${s.head}`}> PV saisi Aujourd'hui </span>
               </div>
               {list}
             </div>

@@ -9,7 +9,8 @@ const PVSchema = new Schema({
         required: [true, 'office field is required']
     },
     stamped: Boolean,
-    filledBy: { type: Schema.Types.ObjectId, ref: 'User' }
+    filledBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    inserted: { type: Date, default: Date.now }
 },
 { strict: false }
 );

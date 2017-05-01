@@ -62,7 +62,7 @@ class Stats extends React.Component {
       items = _.uniqBy(items, 'office');
 
       for(let i of items) {
-        delete i.filledBy; delete i._id; delete i.__v;
+        delete i.filledBy; delete i._id; delete i.__v; delete i.inserted;
         const off = i.office.toString().length === 10 ? ("0" + i.office.toString()) : i.office.toString(),
               circonscriptionId = off.substr(0,2),
               delegationId = off.substr(2,2),
