@@ -11,6 +11,7 @@ import React, { PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Stats.css';
 import history from '../../core/history';
+import _ from 'lodash';
 
 class Stats extends React.Component {
   constructor(props) {
@@ -26,7 +27,6 @@ class Stats extends React.Component {
       errorFilledObject : {},
       allPVSNumber : "",
       allPVSObject : {},
-      csv : '',
       csvURL : ''
     };
 
@@ -53,11 +53,58 @@ class Stats extends React.Component {
   }
 
   pvExtract(){
-    const items = this.state.allPVSObject;
+    let items = this.state.allPVSObject;
+    let newArray = [],
+        index = 0;
+
     if (items.length > 0){
+      // clean data
+      items = _.uniqBy(items, 'office');
+
+      for(let i of items) {
+        delete i.filledBy; delete i._id; delete i.__v;
+        const off = i.office.toString().length === 10 ? ("0" + i.office.toString()) : i.office.toString(),
+              circonscriptionId = off.substr(0,2),
+              delegationId = off.substr(2,2),
+              subDelegationId = off.substr(4,2),
+              centerID = off.substr(6,3),
+              stationId = off.substr(9,2),
+              numberOfKeys = Object.keys(i).length ;
+
+        newArray.push({
+          "circonscriptionId": circonscriptionId,
+          "delegationId": delegationId,
+          "subDelegationId": subDelegationId,
+          "centerID": centerID,
+          "stationId": stationId,
+          "registeredVoters": i.registeredVoters,
+          "aSigningVoters": i.aSigningVoters,
+          "bDeliveredBallots": i.bDeliveredBallots,
+          "cSpoiledBallots": i.cSpoiledBallots,
+          "dLeftBallots": i.dLeftBallots,
+          "eCplusD": i.eCplusD,
+          "fExtractedBallots": i.fExtractedBallots,
+          "gEplusF": i.gEplusF,
+          "hBminusG": i.hBminusG,
+          "iAminusF": i.iAminusF,
+          "jListVotes": i.jListVotes,
+          "kCancelledVotes": i.kCancelledVotes,
+          "lBlankVotes": i.lBlankVotes,
+          "mJplusKplusL": i.mJplusKplusL,
+          "nFminusM": i.nFminusM,
+          "countingStart": i.countingStart,
+          "countingEnd": i.countingEnd,
+          "tampon": i.tampon
+        });
+        for(let x=15; x<numberOfKeys-5 ; x++) {
+          newArray[index][Object.keys(i)[x]]= i[Object.keys(i)[x]] ;
+        }
+        index++;
+      }
+
       const replacer = (key, value) => value === null ? '' : value ;// specify how you want to handle null values here
-      const header = Object.keys(items[0]);
-      let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','));
+      const header = Object.keys(newArray[0]);
+      let csv = newArray.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','));
       csv.unshift(header.join(','));
       csv = csv.join('\r\n');
       return csv;
@@ -108,11 +155,13 @@ class Stats extends React.Component {
     .then((json) => {
       this.setState({
         allPVSNumber : json.length,
-        allPVSObject : json,
-        csv : this.pvExtract(),
+        allPVSObject : json
+      });
+    })
+    .then(() => {
+      this.setState({
         csvURL : 'data:application/csv;charset=utf-8,' +  encodeURIComponent(this.pvExtract())
       });
-      // console.log(this.pvExtract());
     })
     .catch((err) => {
       console.error(err);
