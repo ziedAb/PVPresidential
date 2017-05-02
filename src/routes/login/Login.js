@@ -12,6 +12,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Login.css';
 import Auth from '../../core/Auth';
 import history from '../../core/history';
+import Message from '../../Components/Message';
 
 class Login extends React.Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class Login extends React.Component {
     let successMessage ='';
     this.state = {
       errors: {},
+      errorMessage: false,
       successMessage,
       user: {
         email: '',
@@ -56,7 +58,8 @@ class Login extends React.Component {
       if (xhr.status === 200) {
         // success
         this.setState({
-          errors: {}
+          errors: {},
+          errorMessage : false
         });
 
         // save the token
@@ -70,7 +73,7 @@ class Login extends React.Component {
         errors.summary = xhr.response.message;
 
         this.setState({
-          errors
+          errorMessage : true
         });
       }
     });
@@ -125,6 +128,8 @@ class Login extends React.Component {
             </div>
           </form>
         </div>
+        <Message show={this.state.errorMessage}
+        text="Veuillez vérifier vos identifiants de connexion"/>
       </div>
     );
   }

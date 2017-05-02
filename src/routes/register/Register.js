@@ -11,6 +11,7 @@ import React, { PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Register.css';
 import history from '../../core/history';
+import Message from '../../Components/Message';
 
 class Register extends React.Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class Register extends React.Component {
     // set the initial component state
     this.state = {
       errors: {},
+      errorMessage: false,
       user: {
         email: '',
         name: '',
@@ -49,7 +51,8 @@ class Register extends React.Component {
       if (xhr.status === 200) {
         // success
         this.setState({
-          errors: {}
+          errors: {},
+          errorMessage: false
         });
         // set a message
         localStorage.setItem('successMessage', xhr.response.message);
@@ -61,7 +64,7 @@ class Register extends React.Component {
         const errors = xhr.response.errors ? xhr.response.errors : {};
         errors.summary = xhr.response.message;
         this.setState({
-          errors
+          errorMessage: true
         });
       }
     });
@@ -129,6 +132,8 @@ class Register extends React.Component {
             </div>
           </form>
         </div>
+        <Message show={this.state.errorMessage}
+        text="Veuillez vérifier vos identifiants, le mot de passe doit être supérieur à 8 caractère"/>
       </div>
     );
   }

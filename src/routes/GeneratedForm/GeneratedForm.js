@@ -22,7 +22,8 @@ class GeneratedForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSubmit : false
+      isSubmit : false,
+      sendInProgress: false
     }
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -129,6 +130,10 @@ class GeneratedForm extends React.Component {
 
   handleFormSubmit(event) {
     event.preventDefault();
+    this.setState({
+      sendInProgress: true
+    });
+    debugger;
     let body = {};
     body["office"] = this.props.office.number;
     body["circonscription"] = this.props.office.circonscription;
@@ -165,6 +170,9 @@ class GeneratedForm extends React.Component {
           })
           .then(res => res.json())
           .then((json) => {
+            this.setState({
+              sendInProgress: false
+            });
           })
           .catch((err) => {
             console.error(err);
@@ -193,7 +201,8 @@ class GeneratedForm extends React.Component {
       .then((json) => {
         this.props.updateStates(false, false);
         this.setState({
-          isSubmit : true
+          isSubmit : true,
+          sendInProgress: false
         });
         this.updateFilledTimes(this.props.office, json);
       })
@@ -258,8 +267,9 @@ class GeneratedForm extends React.Component {
             </div>
 
             <div className={s.row}>
-              <input type="submit" className={s.submit} value="Validate" />
+              <input type="submit" className={s.submit} value="Validate" disabled={this.state.sendInProgress}/>
             </div>
+            <Message show={this.state.sendInProgress} text="Veuillez patienter, envoi du PV en cours !"/>
           </div>
         </form>
       );

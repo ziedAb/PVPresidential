@@ -19,7 +19,7 @@ export default {
 
   action() {
     return {
-      title: 'React Starter Kit',
+      title: 'Mourakiboun PV editor',
       component: <Layout><Home /></Layout>,
     };
   },
