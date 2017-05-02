@@ -32,8 +32,6 @@ class Navigation extends React.Component {
         <Link className={s.link} to="/">Nouveau PV</Link>
         <Link className={s.link} to="/suivi" >Suivi</Link>
         <span className={s.spacer}> | </span>
-        <Link className={s.link} to="/stats" >Stats</Link>
-        <span className={s.spacer}> | </span>
         {Auth.isUserAuthenticated() ? (
           <Link className={s.link} to="/login" onClick={this.logout} >{Auth.getUserEmail()} Log out</Link>
         ) : (
