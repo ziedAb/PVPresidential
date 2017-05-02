@@ -42,7 +42,7 @@ class SelectOffice extends React.Component {
         this.setState({filled: false, noPV: false});
         this.props.officeChange(json, true);
       }
-      else if( json.filled === 2){
+      else if( json.filled === 2 && this.props.tocorrect === false ){
         this.setState({filled: true, noPV: false});
       }
       else {
