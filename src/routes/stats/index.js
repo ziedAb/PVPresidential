@@ -10,7 +10,6 @@
 import React from 'react';
 import Layout from '../../components/Layout';
 import Stats from './Stats';
-import Auth from '../../core/Auth';
 
 const title = 'PV stats';
 
