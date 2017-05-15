@@ -40,7 +40,7 @@ global.navigator.userAgent = global.navigator.userAgent || 'all';
 
 
 // connect to mongodb
-mongoose.connect('mongodb://localhost/PVMourakiboun');
+mongoose.connect('mongodb://localhost/PVPresidential');
 mongoose.Promise = global.Promise;
 
 

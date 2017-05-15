@@ -133,7 +133,6 @@ class GeneratedForm extends React.Component {
     this.setState({
       sendInProgress: true
     });
-    debugger;
     let body = {};
     body["office"] = this.props.office.number;
     body["circonscription"] = this.props.office.circonscription;
@@ -240,18 +239,17 @@ class GeneratedForm extends React.Component {
 
             <div className={s.row}>
               <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="registeredVoters" label="عدد الناخبين المرسمين بمكتب الاقتراع"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="aSigningVoters" label="أ- عدد الناخبين الذين امضوا في قائمة الناخبين"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="bDeliveredBallots" label="- عدد أوراق التصويت المسلمة لمكتب الاقتراع"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="cSpoiledBallots" label="ج- عدد أوراق التصويت التالفة"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="dLeftBallots" label="د- عدد أوراق التصويت الباقية"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="aSigningVoters" label="( أ ) عدد الناخبين الذين امضوا في قائمة الناخبين"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="bDeliveredBallots" label="( ب ) عدد أوراق التصويت المسلمة لمكتب الاقتراع"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="cSpoiledBallots" label="( ج ) عدد أوراق التصويت التالفة"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="dLeftBallots" label="( د ) عدد أوراق التصويت الباقية"/>
             </div>
 
             <div className={s.row}>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="eCplusD" label="ه- عدد أوراق التصويت التالفة + عدد أوراق التصويت الباقية"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="fExtractedBallots" label="و- عدد أوراق التصويت المستخرجة من الصندوق"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="gEplusF" label="ز=ه+و"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="hBminusG" label="ح- المطابقة 1 : الفارق العددي بين ب و- ز"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="iAminusF" label="ط- المطابقة 2 : الفارق العددي بين أ و و"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="fExtractedBallots" label="( و ) عدد أوراق التصويت المستخرجة من الصندوق"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="gEplusF" label="( ز ) = ( و ) + ( ج ) + ( د )"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="hBminusG" label="(ح) المطابقة 2 : الفارق العددي بين (ب)  و (ز)"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="iAminusF" label="(ط) المطابقة 1 : الفارق العددي بين (أ) و (و)"/>
             </div>
 
             <h1 className={s.sectionTitle}>القائمات</h1>
@@ -259,11 +257,11 @@ class GeneratedForm extends React.Component {
 
             <h1 className={s.sectionTitle}>معلومات إنتخابية</h1>
             <div className={s.row}>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="jListVotes" label="ي- الأصوات المصرح بها لكل القائمات" />
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="kCancelledVotes" label="ك- عدد أوراق التصويت الملغاة"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="lBlankVotes" label="ل- عدد أوراق التصويت البيضاء"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="mJplusKplusL" label="م) المجموع = ي+ ك+ ل"/>
-              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="nFminusM" label="ن- المطابقة 3 : الفارق العددي بين و و م"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="jListVotes" label="( ي ) الأصوات المصرح بها لكل المترشحين" />
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="kCancelledVotes" label="( ك ) عدد أوراق التصويت الملغاة"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="lBlankVotes" label="( ل ) عدد أوراق التصويت البيضاء"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="mJplusKplusL" label="( م ) المجموع = ي+ ك+ ل"/>
+              <NumberInput className={`${ s.col } ${ s.oneFifth }`} onChange={this.handleChange} maxLength="3" id="nFminusM" label="( ن ) المطابقة 3 : الفارق العددي بين ( و ) و ( م )"/>
             </div>
 
             <div className={s.row}>

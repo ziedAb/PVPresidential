@@ -88,7 +88,6 @@ class Stats extends React.Component {
           "bDeliveredBallots": i.bDeliveredBallots,
           "cSpoiledBallots": i.cSpoiledBallots,
           "dLeftBallots": i.dLeftBallots,
-          "eCplusD": i.eCplusD,
           "fExtractedBallots": i.fExtractedBallots,
           "gEplusF": i.gEplusF,
           "hBminusG": i.hBminusG,

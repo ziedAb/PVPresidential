@@ -26,7 +26,7 @@ class Header extends React.Component {
           </Link>
           <div className={s.banner}>
             <h1 className={s.bannerTitle}>Mourakiboun</h1>
-            <p className={s.bannerDesc}>PV Editor</p>
+            <p className={s.bannerDesc}>Presidential PV Editor</p>
           </div>
         </div>
       </div>
